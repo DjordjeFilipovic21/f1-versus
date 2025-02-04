@@ -36,7 +36,6 @@ export class CircuitComponent implements OnInit {
       .attr('width', width)
       .attr('height', height)
       .attr('viewBox', `0 0 ${width} ${height}`)
-  .attr('transform', 'rotate(-95, 400, 300)');  // Rotate 90 degrees around the center (400, 300)
   }
 
   drawCircuit(data: any) {
