@@ -1,0 +1,32 @@
+.circuits-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+p-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+p-table th, p-table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+p-table th {
+  background-color: #007ad9;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+p-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+p-table tr:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+

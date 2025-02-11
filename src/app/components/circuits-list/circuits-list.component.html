@@ -1,0 +1,27 @@
+  <p-table [value]="circuits" [sortField]="'date_start'" [sortOrder]="1">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="circuit_short_name">Short Name <p-sortIcon field="circuit_short_name"></p-sortIcon></th>
+        <th pSortableColumn="country_code">Country Code <p-sortIcon field="country_code"></p-sortIcon></th>
+        <th pSortableColumn="country_name">Country Name <p-sortIcon field="country_name"></p-sortIcon></th>
+        <th pSortableColumn="date_start">Start Date <p-sortIcon field="date_start"></p-sortIcon></th>
+        <th pSortableColumn="location">Location <p-sortIcon field="location"></p-sortIcon></th>
+        <th pSortableColumn="meeting_name">Meeting Name <p-sortIcon field="meeting_name"></p-sortIcon></th>
+        <th pSortableColumn="meeting_official_name">Official Name <p-sortIcon field="meeting_official_name"></p-sortIcon></th>
+        <th pSortableColumn="year">Year <p-sortIcon field="year"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-circuit>
+      <tr (click)="goToCircuitDetail(circuit.meeting_key)">
+        <td>{{ circuit.circuit_short_name }}</td>
+        <td>{{ circuit.country_code }}</td>
+        <td>{{ circuit.country_name }}</td>
+        <td>{{ circuit.date_start | date: 'dd.MM.yyyy' }}</td>
+        <td>{{ circuit.location }}</td>
+        <td>{{ circuit.meeting_name }}</td>
+        <td>{{ circuit.meeting_official_name }}</td>
+        <td>{{ circuit.year }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+

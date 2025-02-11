@@ -1,0 +1,18 @@
+<div class="circuit-detail-container">
+  <div class="circuit-container" #circuitContainer></div>
+  <div class="lap-controls" *ngIf="maxLaps !== null">
+    <button class="lap-button" (click)="decrementLap()">-</button>
+    <span class="lap-display">Lap: {{ currentLap }}/{{ maxLaps }}</span>
+    <button class="lap-button" (click)="incrementLap()">+</button>
+  </div>
+  <p *ngIf="maxLaps === null">Loading...</p>
+  <div class="session-tabs">
+    <ul>
+      <li *ngFor="let session of sessions"
+          (click)="onTabChange(session.session_key)"
+          [class.selected]="session.session_key === selectedSessionKey">
+        {{ session.session_name }}
+      </li>
+    </ul>
+  </div>
+</div>
