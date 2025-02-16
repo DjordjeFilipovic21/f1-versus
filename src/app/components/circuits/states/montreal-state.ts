@@ -12,15 +12,15 @@ export class MontrealState implements CircuitState {
 
   constructor(private circuitService: CircuitsService) {}
 
-  drawCircuit(svg: any, data: any): void {
-    const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], data);
+    drawCircuit(svg: any, geoJsonData: any, lapData: any): void {
+    const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], geoJsonData);
     const pathGenerator = d3.geoPath().projection(projection);
 
     const circuitPath = {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: data.features[0].geometry.coordinates
+        coordinates: geoJsonData.features[0].geometry.coordinates
       }
     };
 

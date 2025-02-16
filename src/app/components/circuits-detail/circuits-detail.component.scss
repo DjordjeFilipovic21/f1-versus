@@ -1,59 +1,16 @@
-.map-container {
-  width: 100%;
-  height: 600px; /* Set a fixed height to see if the container is visible */
-  position: relative;
-  background-color: lightgrey; /* Temporary background to see if the container is rendered */
-}
-
-.svg-container {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border: black 1px solid; /* Temporary border to see if the container is rendered */
-  background-color: white; /* Temporary background to check if the SVG is within the container */
-}
-
-.circuit-path {
-  fill: none;
-  stroke: black;  /* Ensure this is visible */
-  stroke-width: 4; /* Make the stroke thicker */
-}
 .circuit-detail-container {
   display: flex;
+  align-items: flex-start;
 }
 
 .circuit-container {
-  flex: 1;
+  margin-right: 20px;
 }
 
-.session-tabs {
-  width: 200px;
-  margin-left: 20px;
-}
-
-.session-tabs ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.session-tabs li {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.session-tabs li.selected {
-  background-color: #007bff;
-  color: white;
-}
-
-.circuit-detail-container {
+.details-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.circuit-container {
-  margin-bottom: 20px;
+  align-items: flex-start;
 }
 
 .lap-controls {
@@ -80,4 +37,59 @@
 .lap-display {
   font-size: 18px;
   font-weight: bold;
+}
+
+.drivers-acronyms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.driver-acronym {
+  background-color: #ccc;
+  color: white;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  width: 50px;
+  cursor: pointer;
+}
+
+.driver-acronym:hover {
+  color: #003366;
+}
+
+.driver-acronym.selected {
+  color: #003366;
+}
+
+.session-tabs {
+  width: 200px;
+}
+
+.session-tabs ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.session-tabs li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.session-tabs li.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.custom-tooltip {
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
 }

@@ -5,6 +5,7 @@ import {CircuitState} from '../components/circuits/circuit-state';
 import {map} from 'rxjs/operators';
 import {LapData} from '../model/LapData';
 import {LocationData} from '../model/LocationData';
+import {Driver} from '../model/Driver';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,14 @@ export class CircuitsService {
     );
   }
 
+  getDrivers(session_key: number): Observable<Driver[]> {
+    return this.http.get<Driver[]>(`${this.apiUrl}drivers?session_key=${session_key}`);
+  }
 
+  fetchLapData(selectedSessionKey: number, driver_number: number, currentLap: number): Observable<LapData> {
+    const url = `${this.apiUrl}laps?session_key=${selectedSessionKey}&driver_number=${driver_number}&lap_number=${currentLap}`;
+    return this.http.get<LapData>(url);
+  }
 
 
 }

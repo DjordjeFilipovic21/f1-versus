@@ -15,8 +15,8 @@ export class BelgiumState implements CircuitState {
   }
 
 
-  drawCircuit(svg: any, data: any): void {
-    const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], data);
+  drawCircuit(svg: any, geoJsonData: any, lapData: any): void {
+    const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], geoJsonData);
     const pathGenerator = d3.geoPath().projection(projection);
 
     // Create the circuit path
@@ -24,34 +24,32 @@ export class BelgiumState implements CircuitState {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: data.features[0].geometry.coordinates
+        coordinates: geoJsonData.features[0].geometry.coordinates
       }
     };
+    if(lapData){
+      const outerGradient = svg.append('defs')
+        .append('linearGradient')
+        .attr('id', 'outerGradient')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '100%')
+        .attr('y2', '0%');
 
-    // Create gradients for both borders
-    const outerGradient = svg.append('defs')
-      .append('linearGradient')
-      .attr('id', 'outerGradient')
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '100%')
-      .attr('y2', '0%');
+      outerGradient.append('stop').attr('offset', '0%').attr('stop-color', 'blue');
+      outerGradient.append('stop').attr('offset', '100%').attr('stop-color', 'red');
 
-    outerGradient.append('stop').attr('offset', '0%').attr('stop-color', 'blue');
-    outerGradient.append('stop').attr('offset', '100%').attr('stop-color', 'red');
+      const innerGradient = svg.append('defs')
+        .append('linearGradient')
+        .attr('id', 'innerGradient')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '100%')
+        .attr('y2', '0%');
 
-    const innerGradient = svg.append('defs')
-      .append('linearGradient')
-      .attr('id', 'innerGradient')
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '100%')
-      .attr('y2', '0%');
-
-    innerGradient.append('stop').attr('offset', '0%').attr('stop-color', 'blue');
-    innerGradient.append('stop').attr('offset', '100%').attr('stop-color', 'red');
-
-    // Draw the outer border path (larger stroke width)
+      innerGradient.append('stop').attr('offset', '0%').attr('stop-color', 'blue');
+      innerGradient.append('stop').attr('offset', '100%').attr('stop-color', 'red');
+    }
     svg.append('path')
       .datum(circuitPath)
       .attr('d', pathGenerator)

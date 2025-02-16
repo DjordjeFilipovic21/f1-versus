@@ -9,15 +9,15 @@ export class AustinState implements CircuitState {
   @ViewChild('circuitContainer', { static: true }) circuitContainer!: ElementRef;
   private circuitGeoJson: any = 'https://raw.githubusercontent.com/bacinger/f1-circuits/refs/heads/master/circuits/us-2012.geojson';
 
-  drawCircuit(svg: any, data: any): void {
-    const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], data);
+  drawCircuit(svg: any, geoJsonData: any, lapData: any): void {
+    const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], geoJsonData);
     const pathGenerator = d3.geoPath().projection(projection);
 
     const circuitPath = {
       type: 'Feature',
       geometry: {
         type: 'LineString',
-        coordinates: data.features[0].geometry.coordinates
+        coordinates: geoJsonData.features[0].geometry.coordinates
       }
     };
 
