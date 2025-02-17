@@ -33,8 +33,9 @@ export class CircuitsDetailComponent implements OnInit {
   currentLap: number = 1;
   drivers: Driver[] = [];
   selectedDriver: Driver | null = null;
-
-
+  locationData: any[] = [];
+  locationIndex: number = 0;
+  intervalId: any;
 
   constructor(private route: ActivatedRoute,
               private circuitService: CircuitsService,
@@ -45,8 +46,6 @@ export class CircuitsDetailComponent implements OnInit {
     console.log("Circuit ID from URL:", this.circuitId);
     this.loadCircuit();
   }
-
-
 
   loadCircuit(): void {
     this.circuitService.getCircuit(this.circuitId).subscribe((data) => {
@@ -65,7 +64,7 @@ export class CircuitsDetailComponent implements OnInit {
     });
   }
 
-  drawCircuit(lapData: LapData | null): void {
+  drawCircuit(lapData: any): void {
     const geoJsonUrl = this.circuitState.getGeoJsonUrl();
     d3.json(geoJsonUrl).then((data: any) => {
       this.createSvg();
@@ -73,22 +72,63 @@ export class CircuitsDetailComponent implements OnInit {
     });
   }
 
+  drawDot(location: any): void {
+    const projection = d3.geoIdentity().reflectY(true).translate([-309, -100]);
+    const scaleFactor = 0.1;
+    const projectedLocation = projection([location.x * scaleFactor, location.y * scaleFactor]);
+    if (projectedLocation) {
+      const [x, y] = projectedLocation;
+      this.svg.selectAll('.location-dot').remove();
 
-  selectDriver(driver: Driver): void {
+      console.log('Drawing dot at:', x, y);
+      this.svg.append('circle')
+        .attr('class', 'location-dot')
+        .attr('cx', x)
+        .attr('cy', y)
+        .attr('r', 5)
+        .attr('fill', 'red');
+    }
+  }
+
+  moveDot(): void {
+    if (this.locationIndex < this.locationData.length) {
+      this.drawDot(this.locationData[this.locationIndex]);
+      this.locationIndex++;
+    } else {
+      this.stopMovement();
+    }
+  }
+
+  startMovement(): void {
+    this.stopMovement();
+    this.locationIndex = 0;
+    this.intervalId = setInterval(() => this.moveDot(), 500);
+  }
+
+  stopMovement(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  selectDriver(driver: Driver | null): void {
     this.selectedDriver = driver;
     if (this.selectedDriver) {
-      this.circuitService.fetchLapData(this.selectedSessionKey, this.selectedDriver.driver_number, this.currentLap)
+      this.circuitService.getLapAndLocation(this.selectedSessionKey, this.selectedDriver.driver_number, this.currentLap)
         .subscribe((lapData: any) => {
           this.drawCircuit(lapData);
+          console.log('Lap Data:', lapData);
+          this.locationData = lapData.locations;
+          this.drawDot(this.locationData[0]);
+          console.log('Location Data:', this.locationData[0]);
         });
     }
   }
 
-
-
   createSvg(): void {
     if (this.svg) {
-      this.svg.selectAll('*').remove(); // Clear existing SVG content
+      this.svg.selectAll('*').remove();
     } else {
       this.svg = d3.select(this.circuitContainer.nativeElement)
         .append('svg')
@@ -117,12 +157,14 @@ export class CircuitsDetailComponent implements OnInit {
   incrementLap(): void {
     if (this.maxLaps !== null && this.currentLap < this.maxLaps) {
       this.currentLap++;
+      this.selectDriver(this.selectedDriver);
     }
   }
 
   decrementLap(): void {
     if (this.currentLap > 1) {
       this.currentLap--;
+      this.selectDriver(this.selectedDriver);
     }
   }
 }

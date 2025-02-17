@@ -19,7 +19,6 @@ export class BelgiumState implements CircuitState {
     const projection = d3.geoIdentity().reflectY(true).fitSize([800, 600], geoJsonData);
     const pathGenerator = d3.geoPath().projection(projection);
 
-    // Create the circuit path
     const circuitPath = {
       type: 'Feature',
       geometry: {

@@ -13,6 +13,7 @@ import {Driver} from '../model/Driver';
 export class CircuitsService {
 
   private apiUrl = 'https://api.openf1.org/v1/';
+  private backendUrl = 'http://localhost:3000/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -49,6 +50,10 @@ export class CircuitsService {
   fetchLapData(selectedSessionKey: number, driver_number: number, currentLap: number): Observable<LapData> {
     const url = `${this.apiUrl}laps?session_key=${selectedSessionKey}&driver_number=${driver_number}&lap_number=${currentLap}`;
     return this.http.get<LapData>(url);
+  }
+
+  getLapAndLocation(session_key: number, driver_number: number, current_lap: number): Observable<Driver[]> {
+    return this.http.get<Driver[]>(`${this.backendUrl}race-replay/${session_key}/${driver_number}/${current_lap}`);
   }
 
 
