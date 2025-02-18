@@ -69,26 +69,34 @@ export class CircuitsDetailComponent implements OnInit {
     d3.json(geoJsonUrl).then((data: any) => {
       this.createSvg();
       this.circuitState.drawCircuit(this.svg, data, lapData);
+      if(this.selectedDriver)
+        this.drawDot(this.locationData[0]);
     });
   }
 
   drawDot(location: any): void {
-    const projection = d3.geoIdentity().reflectY(true).translate([-309, -100]);
-    const scaleFactor = 0.1;
-    const projectedLocation = projection([location.x * scaleFactor, location.y * scaleFactor]);
-    if (projectedLocation) {
-      const [x, y] = projectedLocation;
-      this.svg.selectAll('.location-dot').remove();
+    const adjustedX = (location.x) * 0.034 + 375;
+    const adjustedY = (location.y) * -0.034 + 410;
 
-      console.log('Drawing dot at:', x, y);
-      this.svg.append('circle')
+    let dot = this.svg.select('.location-dot');
+
+    if (dot.empty()) {
+      dot = this.svg.append('circle')
         .attr('class', 'location-dot')
-        .attr('cx', x)
-        .attr('cy', y)
-        .attr('r', 5)
-        .attr('fill', 'red');
+        .attr('r', 3)
+        .attr('fill', 'red')
+        .attr('cx', adjustedX)
+        .attr('cy', adjustedY);
     }
+
+    dot.transition()
+      .duration(1000)
+      .ease(d3.easeLinear)
+      .attr('cx', adjustedX)
+      .attr('cy', adjustedY);
   }
+
+
 
   moveDot(): void {
     if (this.locationIndex < this.locationData.length) {
@@ -120,7 +128,6 @@ export class CircuitsDetailComponent implements OnInit {
           this.drawCircuit(lapData);
           console.log('Lap Data:', lapData);
           this.locationData = lapData.locations;
-          this.drawDot(this.locationData[0]);
           console.log('Location Data:', this.locationData[0]);
         });
     }

@@ -27,7 +27,7 @@ export class MelbourneState implements CircuitState {
       .attr('class', 'circuit-path')
       .attr('fill', 'none')
       .attr('stroke', 'black')
-      .attr('stroke-width', 3);
+      .attr('stroke-width', 10);
   }
 
   fetchSessionData(circuitId: number): void {
